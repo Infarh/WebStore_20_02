@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using WebStore.DAL.Context;
 using WebStore.Domain.Entities;
-using WebStore.Infrastructure.Interfaces;
+using WebStore.Interfaces.Services;
 
-namespace WebStore.Infrastructure.Services
+namespace WebStore.Services.Product
 {
     public class SqlProductData : IProductData
     {
@@ -23,9 +21,9 @@ namespace WebStore.Infrastructure.Services
            .Include(brand => brand.Products)
            .AsEnumerable();
 
-        public IEnumerable<Product> GetProducts(ProductFilter Filter = null)
+        public IEnumerable<Domain.Entities.Product> GetProducts(ProductFilter Filter = null)
         {
-            IQueryable<Product> query = _db.Products;
+            IQueryable<Domain.Entities.Product> query = _db.Products;
 
             if (Filter?.BrandId != null)
                 query = query.Where(product => product.BrandId == Filter.BrandId);
@@ -36,7 +34,7 @@ namespace WebStore.Infrastructure.Services
             return query.AsEnumerable(); /*query.ToArray();*/
         }
 
-        public Product GetProductById(int id) => _db.Products
+        public Domain.Entities.Product GetProductById(int id) => _db.Products
            .Include(p => p.Brand)
            .Include(p => p.Section)
            .FirstOrDefault(p => p.Id == id);

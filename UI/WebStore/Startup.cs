@@ -8,8 +8,8 @@ using Microsoft.Extensions.DependencyInjection;
 using WebStore.DAL.Context;
 using WebStore.Data;
 using WebStore.Domain.Entities.Identity;
-using WebStore.Infrastructure.Interfaces;
-using WebStore.Infrastructure.Services;
+using WebStore.Interfaces.Services;
+using WebStore.Services.Product;
 
 namespace WebStore
 {
