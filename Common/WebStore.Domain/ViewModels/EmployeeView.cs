@@ -5,7 +5,7 @@ namespace WebStore.Domain.ViewModels
     /// <summary>Модель-представления сотрудника</summary>
     public class EmployeeView
     {
-        [HiddenInput(DisplayValue = false)]
+        //[HiddenInput(DisplayValue = false)]
         public int Id { get; set; }
 
         [Display(Name = "Имя")]

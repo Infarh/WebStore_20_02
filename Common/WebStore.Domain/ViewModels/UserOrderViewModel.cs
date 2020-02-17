@@ -4,7 +4,7 @@ namespace WebStore.Domain.ViewModels
 {
     public class UserOrderViewModel
     {
-        [HiddenInput(DisplayValue = false)]
+        //[HiddenInput(DisplayValue = false)]
         public int Id { get; set; }
 
         [Display(Name = "Название")]

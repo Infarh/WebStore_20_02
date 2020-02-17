@@ -17,7 +17,7 @@ namespace WebStore.Domain.ViewModels.Identity
         [Display(Name = "Запомнить меня")]
         public bool RememberMe { get; set; }
 
-        [HiddenInput(DisplayValue = false)]
+        //[HiddenInput(DisplayValue = false)]
         public string ReturnUrl { get; set; }
     }
 }
