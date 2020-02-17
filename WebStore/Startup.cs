@@ -61,12 +61,12 @@ namespace WebStore
 
                 opt.LoginPath = "/Account/Login";
                 opt.LogoutPath = "/Account/Logout";
-                opt.AccessDeniedPath = "/Account/AccessDenided";
+                opt.AccessDeniedPath = "/Account/AccessDenied";
 
                 opt.SlidingExpiration = true;
             });
 
-            services.AddSession();
+            //services.AddSession();
 
             services.AddMvc();
         }
@@ -78,6 +78,7 @@ namespace WebStore
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
                 app.UseBrowserLink();
             }
 
@@ -87,7 +88,7 @@ namespace WebStore
 
             app.UseAuthentication();
 
-            app.UseSession();
+            //app.UseSession();
 
             app.UseMvc(routes =>
             {
