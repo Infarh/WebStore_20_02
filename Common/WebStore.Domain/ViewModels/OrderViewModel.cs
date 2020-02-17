@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace WebStore.ViewModels
+namespace WebStore.Domain.ViewModels
 {
     /// <summary>Модель-представления заказа</summary>
     public class OrderViewModel

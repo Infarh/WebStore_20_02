@@ -1,7 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-
-namespace WebStore.Models
+﻿namespace WebStore.Domain.Models
 {
     public class CartItem
     {

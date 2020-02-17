@@ -3,9 +3,9 @@ using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using WebStore.Domain.Entities;
+using WebStore.Domain.Models;
+using WebStore.Domain.ViewModels;
 using WebStore.Infrastructure.Interfaces;
-using WebStore.Models;
-using WebStore.ViewModels;
 
 namespace WebStore.Infrastructure.Services
 {

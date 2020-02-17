@@ -1,4 +1,4 @@
-﻿namespace WebStore.ViewModels
+﻿namespace WebStore.Domain.ViewModels
 {
     /// <summary>
     /// Полная модель-представления для представления корзины,
