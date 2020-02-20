@@ -29,16 +29,17 @@ namespace WebStore.Services.Product
            .Where(order => order.User.UserName == UserName)
            .ToArray()
            .Select(o => new OrderDTO
-            {
-                Phone = o.Phone,
-                Address = o.Address,
-                Date = o.Date,
-                OrderItems = o.OrderItems.Select(item => new OrderItemDTO
-                {
-                    Id = item.Id,
-                    Price = item.Price,
-                    Quantity = item.Quantity
-                })
+           {
+               Id = o.Id,
+               Phone = o.Phone,
+               Address = o.Address,
+               Date = o.Date,
+               OrderItems = o.OrderItems.Select(item => new OrderItemDTO
+               {
+                   Id = item.Id,
+                   Price = item.Price,
+                   Quantity = item.Quantity
+               })
            });
 
         public OrderDTO GetOrderById(int id)
@@ -48,6 +49,7 @@ namespace WebStore.Services.Product
                .FirstOrDefault(order => order.Id == id);
             return o is null ? null : new OrderDTO
             {
+                Id = o.Id,
                 Phone = o.Phone,
                 Address = o.Address,
                 Date = o.Date,
@@ -80,7 +82,7 @@ namespace WebStore.Services.Product
                 foreach (var item in OrderModel.OrderItems)
                 {
                     var product = _db.Products.FirstOrDefault(p => p.Id == item.Id);
-                    if(product is null)
+                    if (product is null)
                         throw new InvalidOperationException($"Товар с идентификатором id:{item.Id} отсутствует в БД");
 
                     var order_item = new OrderItem
@@ -99,6 +101,7 @@ namespace WebStore.Services.Product
 
                 return new OrderDTO
                 {
+                    Id = order.Id,
                     Phone = order.Phone,
                     Address = order.Address,
                     Date = order.Date,

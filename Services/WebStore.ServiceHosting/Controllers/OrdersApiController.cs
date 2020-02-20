@@ -22,6 +22,6 @@ namespace WebStore.ServiceHosting.Controllers
         public OrderDTO GetOrderById(int id) => _OrderService.GetOrderById(id);
 
         [HttpPost("{UserName?}")]
-        public OrderDTO CreateOrder(CreateOrderModel OrderModel, string UserName) => _OrderService.CreateOrder(OrderModel, UserName);
+        public OrderDTO CreateOrder([FromBody] CreateOrderModel OrderModel, string UserName) => _OrderService.CreateOrder(OrderModel, UserName);
     }
 }
