@@ -14,7 +14,7 @@ namespace WebStore.Clients.Orders
     {
         public OrdersClient(IConfiguration config) : base(config, WebAPI.Orders) { }
 
-        public IEnumerable<OrderDTO> GetUserOrders(string UserName) => Get<List<OrderDTO>>($"{_ServiceAddress}/users/{UserName}");
+        public IEnumerable<OrderDTO> GetUserOrders(string UserName) => Get<List<OrderDTO>>($"{_ServiceAddress}/user/{UserName}");
 
         public OrderDTO GetOrderById(int id) => Get<OrderDTO>($"{_ServiceAddress}/{id}");
 
