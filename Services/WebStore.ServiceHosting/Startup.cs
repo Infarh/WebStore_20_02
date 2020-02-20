@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using WebStore.Interfaces.Services;
+using WebStore.Services.Product;
 
 namespace WebStore.ServiceHosting
 {
@@ -13,9 +15,10 @@ namespace WebStore.ServiceHosting
         public Startup(IConfiguration configuration) => Configuration = configuration;
 
 
-
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<IEmployeesData, InMemoryEmployeesData>();
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
