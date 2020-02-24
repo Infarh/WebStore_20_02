@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using WebStore.DAL.Context;
 using WebStore.Domain;
 using WebStore.Domain.DTO.Identity;
@@ -21,9 +22,14 @@ namespace WebStore.ServiceHosting.Controllers
     [ApiController]
     public class UsersApiController : ControllerBase
     {
+        private readonly ILogger<UsersApiController> _Logger;
         private readonly UserStore<User, Role, WebStoreContext> _UserStore;
 
-        public UsersApiController(WebStoreContext db) => _UserStore = new UserStore<User, Role, WebStoreContext>(db);
+        public UsersApiController(WebStoreContext db, ILogger<UsersApiController> Logger)
+        {
+            _Logger = Logger;
+            _UserStore = new UserStore<User, Role, WebStoreContext>(db);
+        }
 
         [HttpGet("AllUsers")]
         public async Task<IEnumerable<User>> GetAllUsers() => await _UserStore.Users.ToArrayAsync();
@@ -37,8 +43,9 @@ namespace WebStore.ServiceHosting.Controllers
         public async Task<string> GetUserNameAsync([FromBody] User user) => await _UserStore.GetUserNameAsync(user);
 
         [HttpPost("UserName/{name}")]
-        public async Task SetUserNameAsync([FromBody] User user, string name)
+        public async Task SetUserNameAsync([FromBody] User user, string name, [FromServices] ILogger<UsersApiController> Logger)
         {
+            Logger.LogInformation("Изменение имени пользователя {0} на {1}", user.Id, name);
             await _UserStore.SetUserNameAsync(user, name);
             await _UserStore.UpdateAsync(user);
         }
@@ -49,6 +56,7 @@ namespace WebStore.ServiceHosting.Controllers
         [HttpPost("NormalUserName/{name}")]
         public async Task SetNormalizedUserNameAsync([FromBody] User user, string name)
         {
+            _Logger.LogInformation("Изменение нормализованного имени пользователя {0} на {1}", user.Id, name);
             await _UserStore.SetNormalizedUserNameAsync(user, name);
             await _UserStore.UpdateAsync(user);
         }
