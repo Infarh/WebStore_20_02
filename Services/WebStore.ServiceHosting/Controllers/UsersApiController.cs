@@ -17,7 +17,7 @@ namespace WebStore.ServiceHosting.Controllers
 {
     //[Route("api/[controller]")]
     [Route(WebAPI.Identity.Users)]
-    [Produces("application/json")]
+    [Produces(MimeType.Json)]
     [ApiController]
     public class UsersApiController : ControllerBase
     {

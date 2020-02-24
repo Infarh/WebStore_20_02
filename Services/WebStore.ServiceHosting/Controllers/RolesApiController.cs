@@ -15,7 +15,7 @@ namespace WebStore.ServiceHosting.Controllers
 {
     //[Route("api/[controller]")]
     [Route(WebAPI.Identity.Roles)]
-    [Produces("application/json")]
+    [Produces(MimeType.Json)]
     [ApiController]
     public class RolesApiController : ControllerBase
     {
