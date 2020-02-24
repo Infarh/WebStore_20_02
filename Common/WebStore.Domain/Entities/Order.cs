@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using WebStore.Domain.DTO.Orders;
 using WebStore.Domain.Entities.Base;
 using WebStore.Domain.Entities.Identity;
 
@@ -16,5 +17,10 @@ namespace WebStore.Domain.Entities
         public DateTime Date { get; set; }
 
         public virtual ICollection<OrderItem> OrderItems { get; set; }
+
+        public OrderDTO ToDTO()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
