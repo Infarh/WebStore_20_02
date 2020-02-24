@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using WebStore.Clients.Employees;
@@ -10,8 +9,6 @@ using WebStore.Clients.Identity;
 using WebStore.Clients.Orders;
 using WebStore.Clients.Products;
 using WebStore.Clients.Values;
-using WebStore.DAL.Context;
-using WebStore.Data;
 using WebStore.Domain.Entities.Identity;
 using WebStore.Interfaces.Api;
 using WebStore.Interfaces.Services;
@@ -27,38 +24,17 @@ namespace WebStore
 
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddDbContext<WebStoreContext>(opt => 
-            //    opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            //services.AddTransient<WebStoreContextInitializer>();
-
-            //services.AddSingleton<IEmployeesData, InMemoryEmployeesData>();
             services.AddSingleton<IEmployeesData, EmployeesClient>();
             services.AddScoped<IProductData, ProductsClient>();
-            //services.AddScoped<IProductData, SqlProductData>();
             services.AddScoped<ICartService, CookieCartService>();
             services.AddScoped<IOrderService, OrdersClient>();
-            //services.AddScoped<IOrderService, SqlOrderService>();
 
             services.AddScoped<IValuesService, ValuesClient>();
 
             services.AddIdentity<User, Role>()
-               //.AddEntityFrameworkStores<WebStoreContext>()
                .AddDefaultTokenProviders();
 
             #region Custom implementation identity storages
-
-            /*
-            
-             IUserRoleStore<User>,
-             IUserPasswordStore<User>,
-             IUserEmailStore<User>,
-             IUserPhoneNumberStore<User>,
-             IUserTwoFactorStore<User>,
-             IUserLockoutStore<User>,
-             IUserClaimStore<User>,
-             IUserLoginStore<User>
-
-             */
 
             services.AddTransient<IUserStore<User>, UsersClient>();
             services.AddTransient<IUserPasswordStore<User>, UsersClient>();
@@ -109,10 +85,8 @@ namespace WebStore
             services.AddMvc();
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env/*, WebStoreContextInitializer db*/)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            //db.InitializeAsync().Wait();
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
