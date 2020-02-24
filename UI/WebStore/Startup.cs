@@ -1,4 +1,5 @@
 ﻿using System;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -10,6 +11,7 @@ using WebStore.Clients.Orders;
 using WebStore.Clients.Products;
 using WebStore.Clients.Values;
 using WebStore.Domain.Entities.Identity;
+using WebStore.Infrastructure.AutoMapper;
 using WebStore.Interfaces.Api;
 using WebStore.Interfaces.Services;
 using WebStore.Services.Product;
@@ -24,6 +26,12 @@ namespace WebStore
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAutoMapper(opt =>
+            {
+                opt.AddProfile<ViewModelMapping>();
+                opt.AddProfile<DTOMapping>();
+            }, typeof(Startup)/*.Assembly*/);
+
             services.AddSingleton<IEmployeesData, EmployeesClient>();
             services.AddScoped<IProductData, ProductsClient>();
             services.AddScoped<ICartService, CookieCartService>();
