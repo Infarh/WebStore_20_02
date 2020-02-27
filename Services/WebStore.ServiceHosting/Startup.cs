@@ -33,6 +33,24 @@ namespace WebStore.ServiceHosting
                .AddEntityFrameworkStores<WebStoreContext>()
                .AddDefaultTokenProviders();
 
+            services.Configure<IdentityOptions>(
+                opt =>
+                {
+                    opt.Password.RequiredLength = 3;
+                    opt.Password.RequireDigit = false;
+                    opt.Password.RequireUppercase = false;
+                    opt.Password.RequireLowercase = false;
+                    opt.Password.RequireNonAlphanumeric = false;
+                    opt.Password.RequiredUniqueChars = 3;
+
+                    opt.Lockout.AllowedForNewUsers = true;
+                    opt.Lockout.MaxFailedAccessAttempts = 10;
+                    opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
+
+                    //opt.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABC123";
+                    opt.User.RequireUniqueEmail = false; // Грабли - на этапе отладки при попытке регистрации двух пользователей без email
+                });
+
             services.AddSwaggerGen(opt =>
             {
                 opt.SwaggerDoc("v1", new OpenApiInfo { Title = "WebStore.API", Version = "v1" });
