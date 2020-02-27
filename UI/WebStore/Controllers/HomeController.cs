@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace WebStore.Controllers
@@ -14,6 +15,8 @@ namespace WebStore.Controllers
             _Logger.LogInformation("Запрос главной страницы!");
             return View();
         }
+
+        public IActionResult ThrowError(string id) => throw new ApplicationException(id);
 
         public IActionResult Blog() => View();
         public IActionResult BlogSingle() => View();
