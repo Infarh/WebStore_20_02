@@ -10,13 +10,13 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       
-    - name: Use .NET 3.1.102
+    - name: Use .NET 2.2.108
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 3.1.102
+        dotnet-version: 2.2.108
         
     - name: Build
-      run: dotnet build
+      run: dotnet build --configuration Debug
       
     - name: Run tests
       run: dotnet test
