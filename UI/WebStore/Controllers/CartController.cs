@@ -85,6 +85,12 @@ namespace WebStore.Controllers
 
         public IActionResult GetCartView() => ViewComponent("Cart");
 
+        public IActionResult AddToCartAPI(int id)
+        {
+            _CartService.AddToCart(id);
+            return Json(new { id, message = $"Товар id:{id} был успешно добавлен в корзину" });
+        }
+
         #endregion
     }
 }
