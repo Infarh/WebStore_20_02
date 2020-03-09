@@ -80,5 +80,11 @@ namespace WebStore.Controllers
             ViewBag.OrderId = id;
             return View();
         }
+
+        #region API
+
+        public IActionResult GetCartView() => ViewComponent("Cart");
+
+        #endregion
     }
 }
