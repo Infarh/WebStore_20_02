@@ -71,13 +71,42 @@
     },
 
     decrementItem: function (event) {
-      
+        event.preventDefault();
 
+        var button = $(this);
+        const id = button.data("id");
+
+        var container = button.closest("tr");
+
+        $.get(Cart._properties.decrementLink + "/" + id)
+            .done(function() {
+                const count = parseInt($(".cart_quantity_input", container).val());
+                if (count > 1) {
+                    $(".cart_quantity_input", container).val(count - 1);
+                    Cart.refreshPrice(container);
+                    Cart.refreshCartView();
+                } else {
+                    container.remove();
+                    Cart.refreshTotalPrice();
+                    Cart.refreshCartView();
+                }
+            })
+            .fail(function () { console.log("decrementItem fail"); });
     },
 
     removeFromCart: function (event) {
-       
+        event.preventDefault();
 
+        var button = $(this);
+        const id = button.data("id");
+
+        $.get(Cart._properties.removeFromCartLink + "/" + id)
+            .done(function () {
+                button.closest("tr").remove();
+                Cart.refreshTotalPrice();
+                Cart.refreshCartView();
+            })
+            .fail(function () { console.log("removeFromCart fail"); });
     },
 
     refreshPrice: function(container) {
