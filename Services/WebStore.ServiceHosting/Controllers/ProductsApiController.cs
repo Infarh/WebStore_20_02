@@ -25,7 +25,7 @@ namespace WebStore.ServiceHosting.Controllers
         /// <summary>Получение всех разделов каталога товаров</summary>
         /// <returns>Перечисление всех разделов каталога</returns>
         [HttpGet("sections")]
-        public IEnumerable<Section> GetSections() => _ProductData.GetSections();
+        public IEnumerable<SectionDTO> GetSections() => _ProductData.GetSections();
 
         [HttpGet("sections/{id}")]
         public SectionDTO GetSectionById(int id) => _ProductData.GetSectionById(id);
@@ -33,7 +33,7 @@ namespace WebStore.ServiceHosting.Controllers
         /// <summary>Получение всех брендов товаров из каталога</summary>
         /// <returns>Перечисление брендов товаров каталога</returns>
         [HttpGet("brands")]
-        public IEnumerable<Brand> GetBrands() => _ProductData.GetBrands();
+        public IEnumerable<BrandDTO> GetBrands() => _ProductData.GetBrands();
 
         [HttpGet("brands/{id}")]
         public BrandDTO GetBrandById(int id) => _ProductData.GetBrandById(id);
