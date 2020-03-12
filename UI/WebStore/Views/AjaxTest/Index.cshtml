@@ -63,5 +63,20 @@
             host.append("msg: " + data.message);
             host.append("time: " + data.serverTime);
         }
+
+        $("#load-data-button").click(e => {
+            e.preventDefault();
+
+            console.log("Send data to server");
+
+            $.get("@Url.Action("GetJSON")", { id: 321, msg: "Hello World!!!" })
+                .done(data => {
+                    const host = $("#panel-js");
+                    host.empty();
+                    host.append(data.message);
+                    host.append("<br/>");
+                    host.append(data.serverTime);
+                });
+        });
     </script>
 }
