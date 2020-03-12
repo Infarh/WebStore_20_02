@@ -2,8 +2,10 @@
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using WebStore.DAL.Context;
+using WebStore.Domain.DTO.Products;
 using WebStore.Domain.Entities;
 using WebStore.Interfaces.Services;
+using WebStore.Services.Mapping;
 
 namespace WebStore.Services.Product
 {
@@ -13,15 +15,15 @@ namespace WebStore.Services.Product
 
         public SqlProductData(WebStoreContext db) => _db = db;
 
-        public IEnumerable<Section> GetSections() => _db.Sections
-           .Include(section => section.Products)
-           .AsEnumerable();
+        public IEnumerable<SectionDTO> GetSections() => _db.Sections.ToDTO().AsEnumerable();
 
-        public IEnumerable<Brand> GetBrands() => _db.Brands
-           .Include(brand => brand.Products)
-           .AsEnumerable();
+        public SectionDTO GetSectionById(int id) => _db.Sections.Find(id).ToDTO();
 
-        public IEnumerable<Domain.Entities.Product> GetProducts(ProductFilter Filter = null)
+        public IEnumerable<BrandDTO> GetBrands() => _db.Brands.ToDTO().AsEnumerable();
+
+        public BrandDTO GetBrandById(int id) => _db.Brands.Find(id).ToDTO();
+
+        public PagedProductsDTO GetProducts(ProductFilter Filter = null)
         {
             IQueryable<Domain.Entities.Product> query = _db.Products;
 
@@ -31,12 +33,27 @@ namespace WebStore.Services.Product
             if (Filter?.SectionId != null)
                 query = query.Where(product => product.SectionId == Filter.SectionId);
 
-            return query.AsEnumerable(); /*query.ToArray();*/
+            if (Filter?.Ids?.Count > 0)
+                query = query.Where(product => Filter.Ids.Contains(product.Id));
+
+            var total_count = query.Count();
+
+            if (Filter?.PageSize != null)
+                query = query
+                   .Skip((Filter.Page - 1) * (int) Filter.PageSize)
+                   .Take((int) Filter.PageSize);
+
+            return new PagedProductsDTO
+            {
+                Products = query.AsEnumerable().ToDTO(),
+                TotalCount = total_count
+            };
         }
 
-        public Domain.Entities.Product GetProductById(int id) => _db.Products
-           .Include(p => p.Brand)
-           .Include(p => p.Section)
-           .FirstOrDefault(p => p.Id == id);
+        public ProductDTO GetProductById(int id) =>
+            _db.Products
+               .Include(p => p.Brand)
+               .Include(p => p.Section)
+               .FirstOrDefault(p => p.Id == id).ToDTO();
     }
 }
