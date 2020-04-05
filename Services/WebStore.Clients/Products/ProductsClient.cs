@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Net.Http;
 using Microsoft.Extensions.Configuration;
 using WebStore.Clients.Base;
@@ -13,20 +13,20 @@ namespace WebStore.Clients.Products
     {
         public ProductsClient(IConfiguration config) : base(config, WebAPI.Products) { }
 
-        public IEnumerable<SectionDTO> GetSections() => Get<List<SectionDTO>>($"{_ServiceAddress}/sections");
+        public IEnumerable<SectionDTO> GetSections() => Get<List<SectionDTO>>("sections");
+        
+        public SectionDTO GetSectionById(int id) => Get<SectionDTO>($"sections/{id}");
 
-        public SectionDTO GetSectionById(int id) => Get<SectionDTO>($"{_ServiceAddress}/sections/{id}");
+        public IEnumerable<BrandDTO> GetBrands() => Get<List<BrandDTO>>("brands");
 
-        public IEnumerable<BrandDTO> GetBrands() => Get<List<BrandDTO>>($"{_ServiceAddress}/brands");
-
-        public BrandDTO GetBrandById(int id) => Get<BrandDTO>($"{_ServiceAddress}/brands/{id}");
+        public BrandDTO GetBrandById(int id) => Get<BrandDTO>($"brands/{id}");
 
         public PagedProductsDTO GetProducts(ProductFilter Filter = null) => 
-            Post(_ServiceAddress, Filter)
+            Post(Filter)
                .Content
                .ReadAsAsync<PagedProductsDTO>()
                .Result;
 
-        public ProductDTO GetProductById(int id) => Get<ProductDTO>($"{_ServiceAddress}/{id}");
+        public ProductDTO GetProductById(int id) => GetById<ProductDTO>(id);
     }
 }
