@@ -15,17 +15,17 @@ namespace WebStore.Clients.Employees
 
         public IEnumerable<EmployeeView> GetAll() => Get<List<EmployeeView>>();
 
-        public EmployeeView GetById(int id) => Get<EmployeeView>(id);
+        public EmployeeView GetById(int id) => GetById<EmployeeView>(id);
 
         public void Add(EmployeeView Employee) => Post(Employee);
 
         public EmployeeView Edit(int id, EmployeeView Employee)
         {
-            var response = Put(id, Employee);
+            var response = PutById(id, Employee);
             return response.Content.ReadAsAsync<EmployeeView>().Result;
         }
 
-        public new bool Delete(int id) => base.Delete(id).IsSuccessStatusCode;
+        public bool Delete(int id) => DeleteById(id).IsSuccessStatusCode;
 
         public void SaveChanges() { }
     }

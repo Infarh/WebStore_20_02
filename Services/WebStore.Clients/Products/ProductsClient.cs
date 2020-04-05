@@ -23,6 +23,6 @@ namespace WebStore.Clients.Products
                .ReadAsAsync<List<ProductDTO>>()
                .Result;
 
-        public ProductDTO GetProductById(int id) => Get<ProductDTO>(id);
+        public ProductDTO GetProductById(int id) => GetById<ProductDTO>(id);
     }
 }
