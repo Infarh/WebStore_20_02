@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Net.Http;
 using Microsoft.Extensions.Configuration;
 using WebStore.Clients.Base;
@@ -13,14 +13,18 @@ namespace WebStore.Clients.Products
     {
         public ProductsClient(IConfiguration config) : base(config, WebAPI.Products) { }
 
-        public IEnumerable<Section> GetSections() => Get<List<Section>>("sections");
+        public IEnumerable<SectionDTO> GetSections() => Get<List<SectionDTO>>("sections");
+        
+        public SectionDTO GetSectionById(int id) => Get<SectionDTO>($"sections/{id}");
 
-        public IEnumerable<Brand> GetBrands() => Get<List<Brand>>("brands");
+        public IEnumerable<BrandDTO> GetBrands() => Get<List<BrandDTO>>("brands");
 
-        public IEnumerable<ProductDTO> GetProducts(ProductFilter Filter = null) => 
+        public BrandDTO GetBrandById(int id) => Get<BrandDTO>($"brands/{id}");
+
+        public PagedProductsDTO GetProducts(ProductFilter Filter = null) => 
             Post(Filter)
                .Content
-               .ReadAsAsync<List<ProductDTO>>()
+               .ReadAsAsync<PagedProductsDTO>()
                .Result;
 
         public ProductDTO GetProductById(int id) => GetById<ProductDTO>(id);

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -35,33 +36,37 @@ namespace WebStore.Controllers
         public IActionResult Register() => View(new RegisterUserViewModel());
 
         [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterUserViewModel Model)
+        public async Task<IActionResult> Register(RegisterUserViewModel Model, [FromServices] IMapper Mapper)
         {
             if (!ModelState.IsValid)
                 return View(Model);
 
-            var user = new User
+            using (_Logger.BeginScope("Регистрация нового пользователя {0}", Model.UserName))
             {
-                UserName = Model.UserName
-            };
+                //var user = new User
+                //{
+                //    UserName = Model.UserName
+                //};
+                var user = Mapper.Map<User>(Model);
 
-            _Logger.LogInformation("Регистрация нового пользователя {0}", Model.UserName);
+                var registration_result = await _UserManager.CreateAsync(user, Model.Password);
+                if (registration_result.Succeeded)
+                {
+                    _Logger.LogInformation("Пользователь {0} успешно зарегистрирован", Model.UserName);
+                    await _UserManager.AddToRoleAsync(user, Role.User);
+                    _Logger.LogInformation("Пользователю {0} добавлена роль {1}", Model.UserName, Role.User);
 
-            var registration_result = await _UserManager.CreateAsync(user, Model.Password);
-            if (registration_result.Succeeded)
-            {
-                await _UserManager.AddToRoleAsync(user, Role.User);
-                _Logger.LogInformation("Пользователь {0} успешно зарегистрирован", Model.UserName);
-                await _SignInManager.SignInAsync(user, false);
-                _Logger.LogInformation("Пользователь {0} вошёл в систему", Model.UserName);
-                return RedirectToAction("Index", "Home");
+                    await _SignInManager.SignInAsync(user, false);
+                    _Logger.LogInformation("Пользователь {0} вошёл в систему", Model.UserName);
+                    return RedirectToAction("Index", "Home");
+                }
+
+                foreach (var error in registration_result.Errors)
+                    ModelState.AddModelError(string.Empty, error.Description);
+
+                _Logger.LogWarning("Ошибка при регистрации нового пользователя {0}:{1}",
+                    Model.UserName, string.Join(", ", registration_result.Errors.Select(e => e.Description)));
             }
-
-            foreach (var error in registration_result.Errors)
-                ModelState.AddModelError("", error.Description);
-
-            _Logger.LogWarning("Ошибка при регистрации нового пользователя {0}:{1}",
-                Model.UserName, string.Join(", ", registration_result.Errors.Select(e => e.Description)));
 
             return View(Model);
         }

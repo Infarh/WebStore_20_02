@@ -26,6 +26,7 @@ bld/
 [Bb]in/
 [Oo]bj/
 [Ll]og/
+[Ll]ogs/
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/
@@ -343,3 +344,5 @@ healthchecksdb
 /UI/WebStore/wwwroot/js/site.min.js
 /UI/WebStore/wwwroot/js/site.js
 /UI/WebStore/wwwroot/lib
+/UI/WebStore/wwwroot/css/site.min.css
+/UI/WebStore/wwwroot/css/site.css

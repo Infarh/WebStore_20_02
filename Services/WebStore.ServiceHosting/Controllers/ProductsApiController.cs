@@ -11,6 +11,7 @@ using WebStore.Interfaces.Services;
 
 namespace WebStore.ServiceHosting.Controllers
 {
+    /// <summary>Контроллер каталога товаров</summary>
     //[Route("api/[controller]")]
     [Route(WebAPI.Products)]
     //[Route("api/products")]
@@ -21,15 +22,31 @@ namespace WebStore.ServiceHosting.Controllers
 
         public ProductsApiController(IProductData ProductData) => _ProductData = ProductData;
        
+        /// <summary>Получение всех разделов каталога товаров</summary>
+        /// <returns>Перечисление всех разделов каталога</returns>
         [HttpGet("sections")]
-        public IEnumerable<Section> GetSections() => _ProductData.GetSections();
-        
+        public IEnumerable<SectionDTO> GetSections() => _ProductData.GetSections();
+
+        [HttpGet("sections/{id}")]
+        public SectionDTO GetSectionById(int id) => _ProductData.GetSectionById(id);
+
+        /// <summary>Получение всех брендов товаров из каталога</summary>
+        /// <returns>Перечисление брендов товаров каталога</returns>
         [HttpGet("brands")]
-        public IEnumerable<Brand> GetBrands() => _ProductData.GetBrands();
-        
+        public IEnumerable<BrandDTO> GetBrands() => _ProductData.GetBrands();
+
+        [HttpGet("brands/{id}")]
+        public BrandDTO GetBrandById(int id) => _ProductData.GetBrandById(id);
+
+        /// <summary>Получение товаров, удовлетворяющих критерию поиска</summary>
+        /// <param name="Filter">Фильтр - критерий поиска товаров в каталоге</param>
+        /// <returns>Перечисление всех товаров из каталога, удовлетворяющих критерию поиска</returns>
         [HttpPost, ActionName("Post")]
-        public IEnumerable<ProductDTO> GetProducts([FromBody] ProductFilter Filter = null) => _ProductData.GetProducts(Filter);
+        public PagedProductsDTO GetProducts([FromBody] ProductFilter Filter = null) => _ProductData.GetProducts(Filter);
         
+        /// <summary>Получение информации по товару, заданному идентификатором</summary>
+        /// <param name="id">Идентификатор товара, информацию по которому требуется получить</param>
+        /// <returns>Информацию по товару, заданному идентификатором</returns>
         [HttpGet("{id}"), ActionName("Get")]
         public ProductDTO GetProductById(int id) => _ProductData.GetProductById(id);
     }
