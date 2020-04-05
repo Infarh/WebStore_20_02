@@ -13,19 +13,19 @@ namespace WebStore.Clients.Employees
     {
         public EmployeesClient(IConfiguration config) : base(config, "api/employees") { }
 
-        public IEnumerable<EmployeeView> GetAll() => Get<List<EmployeeView>>(_ServiceAddress);
+        public IEnumerable<EmployeeView> GetAll() => Get<List<EmployeeView>>();
 
-        public EmployeeView GetById(int id) => Get<EmployeeView>($"{_ServiceAddress}/{id}");
+        public EmployeeView GetById(int id) => Get<EmployeeView>(id);
 
-        public void Add(EmployeeView Employee) => Post(_ServiceAddress, Employee);
+        public void Add(EmployeeView Employee) => Post(Employee);
 
         public EmployeeView Edit(int id, EmployeeView Employee)
         {
-            var response = Put($"{_ServiceAddress}/{id}", Employee);
+            var response = Put(id, Employee);
             return response.Content.ReadAsAsync<EmployeeView>().Result;
         }
 
-        public bool Delete(int id) => Delete($"{_ServiceAddress}/{id}").IsSuccessStatusCode;
+        public new bool Delete(int id) => base.Delete(id).IsSuccessStatusCode;
 
         public void SaveChanges() { }
     }
